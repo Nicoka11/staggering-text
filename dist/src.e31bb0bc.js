@@ -6212,18 +6212,8 @@ var DOM = {
         return this.paragraph.querySelectorAll(".word > .char, .whitespace");
       },
 
+      underline: document.querySelector(".underline__background"),
       isVisible: true
-    },
-    somethingelse: {
-      section: document.querySelector(".content__item--something"),
-      paragraph: document.querySelector(".content__paragraph--something"),
-      hover: document.querySelector(".content__hover--something"),
-
-      get chars() {
-        return this.paragraph.querySelectorAll(".word > .char, .whitespace");
-      },
-
-      isVisible: false
     }
   }
 }; //TIMELINE
@@ -6233,57 +6223,36 @@ var timelineSettings = {
   charsDuration: 0.5
 };
 
-var timelineW = _gsap.gsap.timeline({
+var timelineIn = _gsap.gsap.timeline({
   paused: true
 }).addLabel("start").staggerTo(DOM.content.whatever.chars, timelineSettings.charsDuration, {
   ease: "Power3.easeIn",
-  y: "-100%",
-  opacity: 0
-}, timelineSettings.staggerValue, "start");
+  y: "-5%"
+}, timelineSettings.staggerValue, "start").to(DOM.content.whatever.underline, {
+  x: '0%'
+}, 'out');
 
-var timelineS = _gsap.gsap.timeline({
+var timelineOut = _gsap.gsap.timeline({
   paused: true
-}).addLabel("start").from(DOM.content.somethingelse.chars, {
+}).addLabel("start").staggerTo(DOM.content.whatever.chars, timelineSettings.charsDuration, {
   ease: "Power3.easeIn",
-  y: "100%",
-  opacity: 0
-}, "start").staggerTo(DOM.content.somethingelse.chars, timelineSettings.charsDuration, {
-  ease: "Power3.easeIn",
-  y: "0%",
-  opacity: 1
-}, timelineSettings.staggerValue, "start");
-
-var switchContentIn = function switchContentIn() {
-  DOM.content.whatever.isVisible = !DOM.content.whatever.isVisible;
-  DOM.content.somethingelse.isVisible = !DOM.content.whatever.isVisible;
-  timelineW.play();
-
-  if (!timelineW.isActive()) {
-    DOM.content.whatever.paragraph.classList.remove("content__active");
-    DOM.content.somethingelse.paragraph.classList.add("content__active");
-  }
-
-  timelineS.play();
-};
-
-var switchContentOut = function switchContentOut() {
-  DOM.content.whatever.isVisible = !DOM.content.whatever.isVisible;
-  DOM.content.somethingelse.isVisible = !DOM.content.whatever.isVisible;
-  timelineS.reverse();
-
-  if (!timelineS.isActive()) {
-    DOM.content.somethingelse.paragraph.classList.remove("content__active");
-    DOM.content.whatever.paragraph.classList.add("content__active");
-  }
-
-  timelineW.reverse();
-};
+  y: "0%"
+}, timelineSettings.staggerValue, "start").to(DOM.content.whatever.underline, {
+  x: '100%'
+}, 'out').set(DOM.content.whatever.underline, {
+  x: '-100%'
+});
 
 DOM.content.whatever.hover.addEventListener("mouseover", function () {
-  return switchContentIn();
+  console.log("Mouse In");
+  timelineIn.play();
 });
 DOM.content.whatever.hover.addEventListener("mouseout", function () {
-  return switchContentOut();
+  console.log("Mouse Out");
+  timelineOut.play(); // Reset Animation
+
+  timelineIn.progress(0);
+  timelineOut.progress(0);
 });
 },{"splitting/dist/splitting.css":"../node_modules/splitting/dist/splitting.css","splitting/dist/splitting-cells.css":"../node_modules/splitting/dist/splitting-cells.css","splitting":"../node_modules/splitting/dist/splitting.js","gsap":"../node_modules/gsap/index.js"}],"C:/Users/nicok/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -6313,7 +6282,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57324" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54826" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
